@@ -35,6 +35,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""89d5567a-63d0-4ade-a266-89eccabb2573"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseLMB"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""7f5ff183-b91a-4670-b9ab-9f69f48d77db"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +110,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f0c3cf4-9787-4d78-ac82-2d40fda8352b"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3f49e06-d784-4649-b56e-0f709c918d8d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLMB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +141,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Desktop
         m_Desktop = asset.FindActionMap("Desktop", throwIfNotFound: true);
         m_Desktop_Move = m_Desktop.FindAction("Move", throwIfNotFound: true);
+        m_Desktop_MouseDelta = m_Desktop.FindAction("MouseDelta", throwIfNotFound: true);
+        m_Desktop_MouseLMB = m_Desktop.FindAction("MouseLMB", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,11 +205,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Desktop;
     private List<IDesktopActions> m_DesktopActionsCallbackInterfaces = new List<IDesktopActions>();
     private readonly InputAction m_Desktop_Move;
+    private readonly InputAction m_Desktop_MouseDelta;
+    private readonly InputAction m_Desktop_MouseLMB;
     public struct DesktopActions
     {
         private @Controls m_Wrapper;
         public DesktopActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Desktop_Move;
+        public InputAction @MouseDelta => m_Wrapper.m_Desktop_MouseDelta;
+        public InputAction @MouseLMB => m_Wrapper.m_Desktop_MouseLMB;
         public InputActionMap Get() { return m_Wrapper.m_Desktop; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -180,6 +226,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @MouseDelta.started += instance.OnMouseDelta;
+            @MouseDelta.performed += instance.OnMouseDelta;
+            @MouseDelta.canceled += instance.OnMouseDelta;
+            @MouseLMB.started += instance.OnMouseLMB;
+            @MouseLMB.performed += instance.OnMouseLMB;
+            @MouseLMB.canceled += instance.OnMouseLMB;
         }
 
         private void UnregisterCallbacks(IDesktopActions instance)
@@ -187,6 +239,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @MouseDelta.started -= instance.OnMouseDelta;
+            @MouseDelta.performed -= instance.OnMouseDelta;
+            @MouseDelta.canceled -= instance.OnMouseDelta;
+            @MouseLMB.started -= instance.OnMouseLMB;
+            @MouseLMB.performed -= instance.OnMouseLMB;
+            @MouseLMB.canceled -= instance.OnMouseLMB;
         }
 
         public void RemoveCallbacks(IDesktopActions instance)
@@ -207,5 +265,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IDesktopActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnMouseDelta(InputAction.CallbackContext context);
+        void OnMouseLMB(InputAction.CallbackContext context);
     }
 }

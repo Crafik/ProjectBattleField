@@ -11,4 +11,8 @@ public class PlayerScript : MonoBehaviour
     void OnDisable(){
         // here be code
     }
+
+    void Start(){
+        CameraFollow.Instance.SetTarget(gameObject);
+    }
 }

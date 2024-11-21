@@ -45,7 +45,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDesktopMovementPerformed(InputAction.CallbackContext ctx){
         _inputVector = ctx.ReadValue<Vector2>();
-        Debug.Log(_inputVector);
     }
 
     void FixedUpdate(){
